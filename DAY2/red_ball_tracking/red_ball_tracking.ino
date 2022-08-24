@@ -108,6 +108,8 @@ void setup() {
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
+  pinMode(servo1, OUTPUT);
+  myservo1.attach(servo1);
   pixy.init();
 
 }
