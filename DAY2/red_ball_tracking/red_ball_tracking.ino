@@ -3,15 +3,17 @@
 Servo myservo1;
 Pixy2 pixy;
 ////motor control mode pin
-#define ENA 13
-#define IN1 12
-#define IN2 11
-#define IN3 10
-#define IN4 9
-#define ENB 8
+#define ENA 8
+#define IN1 9
+#define IN2 10
+#define IN3 11
+#define IN4 12
+#define ENB 13
 //wheel speed
 #define speedleft 150
 #define speedright 100
+#define speedleft 120
+#define speedright 120
 #define servo1 5
 uint16_t blocks;
 int sig[3], x[3], width[3];
@@ -56,21 +58,22 @@ void go_back(){
 }
 
 void turn_right(){
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENA, speedleft);
-  analogWrite(ENB, speedright);
-}
-
-void turn_left(){
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, HIGH);
   analogWrite(ENA, speedleft);
   analogWrite(ENB, speedright);
+}
+
+void turn_left(){
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, speedleft);
+  analogWrite(ENB, speedright);
+  
 }
 void ditect_redball(){
   pixy.ccc.getBlocks();
@@ -118,14 +121,23 @@ void loop() {
   pixy.ccc.getBlocks();
   blocks = pixy.ccc.numBlocks;
   if(blocks){
-    if(pixy.ccc.blocks[1].m_x>170){
-      turn_left();
-    }
-    else if(pixy.ccc.blocks[1].m_x<146){
+    Serial.print("blocks:");
+    Serial.print(blocks);
+    Serial.print("\n");
+    if(pixy.ccc.blocks[1].m_x>200){
+      Serial.print("turn right\n");
       turn_right();
+    }
+    else if(pixy.ccc.blocks[1].m_x<150){
+
+      Serial.print("turn left\n");
+      turn_left();
     }
   }
   else
     stop_motor();
+    Serial.print("stop\n");
+    
+  delay(100);
 }
   
