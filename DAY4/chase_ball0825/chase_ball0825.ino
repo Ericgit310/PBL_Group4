@@ -14,6 +14,7 @@ Pixy2 pixy;
 #define speedright 66
 #define servo1 5
 uint16_t blocks;
+int i = 0;
 int sig[3], x[3], width[3];
 int red_block, white_block;
 void stop_motor() {
@@ -66,13 +67,13 @@ void go_back() {
   analogWrite(ENB, speedright);
 }
 
-void turn_right() {
+void turn_right(int left = speedleft, int right = speedright) {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, HIGH);
-  analogWrite(ENA, speedleft);
-  analogWrite(ENB, speedright);
+  analogWrite(ENA, left);
+  analogWrite(ENB, right);
 }
 
 void turn_left() {
@@ -126,14 +127,11 @@ void setup() {
 }
 
 void loop() {
-  int i;
+  
   Serial.print("\n");
   pixy.ccc.getBlocks();
-
   blocks = pixy.ccc.numBlocks;
-
   if (blocks) {
-
     for (i = 0; i < 1; i++)
     {
       Serial.print("  block ");
@@ -150,9 +148,9 @@ void loop() {
     Serial.print("\n");
     if (pixy.ccc.blocks[0].m_x > 140 && pixy.ccc.blocks[0].m_x < 210 && pixy.ccc.blocks[0].m_width >= 140) {
       Serial.print("collect redball\n");
-      //collect_redball();
       stop_motor();
       delay(2000);
+      collect_redball();
     }
     else if (pixy.ccc.blocks[0].m_x > 140 && pixy.ccc.blocks[0].m_x < 210 && pixy.ccc.blocks[0].m_width < 140) {
       Serial.print("go straight\n");
@@ -174,8 +172,11 @@ void loop() {
     }
   }
   else
+    delay(200);
+    if(!blocks){
+      turn_right(40,40);
+    }
     detect_redball();
   Serial.print("detect_redball\n");
-  
   delay(100);
 }
