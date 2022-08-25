@@ -10,8 +10,8 @@ Pixy2 pixy;
 #define IN4 12
 #define ENB 13
 //wheel speed
-#define speedleft 150
-#define speedright 150
+#define speedleft 60
+#define speedright 75
 #define servo1 5
 uint16_t blocks;
 int sig[3], x[3], width[3];
@@ -126,43 +126,44 @@ void setup() {
 }
 
 void loop() {
-  int i;
-  Serial.print("\n");
-  pixy.ccc.getBlocks();
-
-  blocks = pixy.ccc.numBlocks;
-
-  if (blocks) {
-
-    for (i = 0; i < 1; i++)
-    {
-      Serial.print("  block ");
-      Serial.print(i);
-      Serial.print(": ");
-      Serial.print("red_X:");
-      Serial.println(pixy.ccc.blocks[i].m_x);
-    }
-    Serial.print("blocks:");
-    Serial.print(blocks);
-    Serial.print("\n");
-    if (pixy.ccc.blocks[0].m_x > 200) {
-      Serial.print("turn right\n");
-      turn_right();
-      delay(200);
-      stop_motor();
-    }
-    else if (pixy.ccc.blocks[0].m_x < 150) {
-
-      Serial.print("turn left\n");
-      turn_left();
-      delay(200);
-      stop_motor();
-    }
-  }
-  else
-    stop_motor();
-  Serial.print("stop\n");
-
-  delay(100);
-  //collect_redball();
+//  int i;
+//  Serial.print("\n");
+//  pixy.ccc.getBlocks();
+//
+//  blocks = pixy.ccc.numBlocks;
+//
+//  if (blocks) {
+//
+//    for (i = 0; i < 1; i++)
+//    {
+//      Serial.print("  block ");
+//      Serial.print(i);
+//      Serial.print(": ");
+//      Serial.print("red_X:");
+//      Serial.println(pixy.ccc.blocks[i].m_x);
+//    }
+//    Serial.print("blocks:");
+//    Serial.print(blocks);
+//    Serial.print("\n");
+//    if (pixy.ccc.blocks[0].m_x > 210) {
+//      Serial.print("turn right\n");
+//      turn_right();
+//      delay(200);
+//      stop_motor();
+//    }
+//    else if (pixy.ccc.blocks[0].m_x < 140) {
+//
+//      Serial.print("turn left\n");
+//      turn_left();
+//      delay(200);
+//      stop_motor();
+//    }
+//  }
+//  else
+//    stop_motor();
+//  Serial.print("stop\n");
+//
+//  delay(100);
+//  //collect_redball();
+  go_straight();
 }
