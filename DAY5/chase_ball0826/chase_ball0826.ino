@@ -50,13 +50,13 @@ void collect_redball() {
   }
   delay(1000);
 }
-void go_straight() {
+void go_straight(int left = speedleft, int right = speedright) {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
-  analogWrite(ENA, speedleft);
-  analogWrite(ENB, speedright);
+  analogWrite(ENA, left);
+  analogWrite(ENB, right);
 }
 
 void go_back() {
@@ -77,13 +77,13 @@ void turn_right(int left = speedleft, int right = speedright) {
   analogWrite(ENB, right);
 }
 
-void turn_left() {
+void turn_left(int left = speedleft, int right = speedright) {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
-  analogWrite(ENA, speedleft);
-  analogWrite(ENB, speedright);
+  analogWrite(ENA, left);
+  analogWrite(ENB, right);
 
 }
 void detect_redball() {
@@ -147,12 +147,13 @@ void loop() {
     Serial.print("blocks:");
     Serial.print(blocks);
     Serial.print("\n");
-    if ((pixy.ccc.blocks[0].m_x > 140) && (pixy.ccc.blocks[0].m_x < 210) && ((pixy.ccc.blocks[0].m_width >= 90)||(pixy.ccc.blocks[0].m_y > 130))) {
+    //(pixy.ccc.blocks[0].m_width >= 90)
+    if ((pixy.ccc.blocks[0].m_x > 140) && (pixy.ccc.blocks[0].m_x < 210) && (pixy.ccc.blocks[0].m_y > 180)) {
       Serial.print("collect redball\n");
       stop_motor();
       delay(500);
-      go_straight();
-      delay(300);
+//      go_straight();
+//      delay(300);
       collect_redball();
     }
     else if (pixy.ccc.blocks[0].m_x > 140 && pixy.ccc.blocks[0].m_x < 210 && pixy.ccc.blocks[0].m_width < 180) {
@@ -166,12 +167,14 @@ void loop() {
       turn_right();
       delay(50);
       stop_motor();
+      delay(100);
     }
-    else if (pixy.ccc.blocks[0].m_x < 140){// you miss this line
+    else if (pixy.ccc.blocks[0].m_x < 140){
       Serial.print("turn left\n");
       turn_left();
       delay(50);
       stop_motor();
+      delay(100);
     }
   }
   else if((millis()-startTime)>500){
@@ -179,12 +182,12 @@ void loop() {
     startTime = millis();
     Serial.print("turn right search ball");
     turn_right(40,56);
-    delay(100);
+    delay(200);
     stop_motor();
+    delay(100);
   }
   else{
     detect_redball();
     Serial.print("detect_redball\n");
-    delay(50);
   }
 }
