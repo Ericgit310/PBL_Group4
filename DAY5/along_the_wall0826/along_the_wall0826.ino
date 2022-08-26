@@ -105,7 +105,7 @@ void Distance(){
   C_cm = (C_duration/2) / 29.1;
 }
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
   pinMode(IN1, OUTPUT);
