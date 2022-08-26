@@ -31,20 +31,20 @@ void servo_setup() {
   delay(1000);
 }
 void collect_redball() {
-  int angle = 135;
+  int angle = 0;
   stop_motor();
   myservo1.write(angle);
-  if (angle > 0) {
-    for (; angle > 0; angle -= 1) {
+  if (angle < 90) {
+    for (; angle <90 ; angle += 1) {
       myservo1.write(angle);
-      delay(15);
+      delay(5);
     }
   }
   delay(1000);
-  if (angle < 135) {
-    for (; angle < 135; angle += 1) {
+  if (angle > 0) {
+    for (; angle > 0; angle -= 1) {
       myservo1.write(angle);
-      delay(15);
+      delay(5);
     }
   }
   delay(1000);
@@ -123,11 +123,10 @@ void setup() {
   pinMode(servo1, OUTPUT);
   myservo1.attach(servo1);
   pixy.init();
-
+  myservo1.write(0);
 }
 
 void loop() {
-  
   Serial.print("\n");
   pixy.ccc.getBlocks();
   blocks = pixy.ccc.numBlocks;
@@ -146,13 +145,15 @@ void loop() {
     Serial.print("blocks:");
     Serial.print(blocks);
     Serial.print("\n");
-    if (pixy.ccc.blocks[0].m_x > 140 && pixy.ccc.blocks[0].m_x < 210 && pixy.ccc.blocks[0].m_width >= 140) {
+    if ((pixy.ccc.blocks[0].m_x > 140) && (pixy.ccc.blocks[0].m_x < 210) && ((pixy.ccc.blocks[0].m_width >= 90)||(pixy.ccc.blocks[0].m_y > 130))) {
       Serial.print("collect redball\n");
       stop_motor();
-      delay(2000);
+      delay(500);
+      go_straight();
+      delay(300);
       collect_redball();
     }
-    else if (pixy.ccc.blocks[0].m_x > 140 && pixy.ccc.blocks[0].m_x < 210 && pixy.ccc.blocks[0].m_width < 140) {
+    else if (pixy.ccc.blocks[0].m_x > 140 && pixy.ccc.blocks[0].m_x < 210 && pixy.ccc.blocks[0].m_width < 180) {
       Serial.print("go straight\n");
       go_straight();
       delay(100);
@@ -173,9 +174,9 @@ void loop() {
   }
   else
     delay(200);
-    if(!blocks){
-      turn_right(40,40);
-    }
+    turn_right(40,56);
+    delay(200);
+    Serial.print("else");
     detect_redball();
   Serial.print("detect_redball\n");
   delay(100);
