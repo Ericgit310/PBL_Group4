@@ -162,9 +162,8 @@ void setup() {
 }
 
 void loop() {
-  collect_redball();
   missiontime=millis();
-  while((millis()-missiontime)< 0){
+  while((millis()-missiontime)< 60000){
     Serial.print("mission 1");
     //ball detection
     pixy.ccc.getBlocks();
@@ -233,7 +232,7 @@ void loop() {
     Serial.println("mission 2");
     //sonic senor
     Distance();
-    if(C_cm < turn_Distance-12){
+    if(C_cm < turn_Distance-8){
       Serial.println("C_sonic detected");
       go_back();
       delay(1000);
@@ -249,7 +248,7 @@ void loop() {
       }
     else if(R_cm < turn_Distance-2){
         Serial.println("R_sonic detected");
-        turn_left(0,30);
+        turn_left(30,30);
         delay(75);
         stop_motor();
       }
@@ -282,33 +281,34 @@ void loop() {
       }
       else if (pixy.ccc.blocks[0].m_x > 140 && pixy.ccc.blocks[0].m_x < 210 && pixy.ccc.blocks[0].m_width < 180) {
         Serial.print("go straight\n");
-        go_straight();
-        delay(50);
+        go_straight(80,96);
+        delay(100);
         stop_motor();
       }
       else if (pixy.ccc.blocks[0].m_x > 210) {
         Serial.print("turn right\n");
         turn_right(80, 96);
-        delay(50);
+        delay(100);
         stop_motor();
         delay(100);
       }
       else if (pixy.ccc.blocks[0].m_x < 140){
         Serial.print("turn left\n");
         turn_left(80,96);
-        delay(50);
+        delay(100);
         stop_motor();
         delay(100);
       }
     }
     else if((millis()-startTime)>500){
-      stop_motor();
       Serial.print((millis()-startTime));
-      startTime = millis();
+      
       Serial.print("go straight search ball");
-      go_straight(90,106 );
-      
-      
+      go_straight(80,96 );
+//      if((millis()-startTime)>1000){
+//        stop_motor();
+//      }
+//      startTime = millis();
     }
     else{
       detect_redball();
