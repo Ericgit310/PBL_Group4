@@ -288,24 +288,26 @@ void loop() {
       }
       else if (pixy.ccc.blocks[0].m_x > 210) {
         Serial.print("turn right\n");
-        turn_right();
+        turn_right(80, 96);
         delay(50);
         stop_motor();
         delay(100);
       }
       else if (pixy.ccc.blocks[0].m_x < 140){
         Serial.print("turn left\n");
-        turn_left();
+        turn_left(80,96);
         delay(50);
         stop_motor();
         delay(100);
       }
     }
     else if((millis()-startTime)>500){
+      stop_motor();
       Serial.print((millis()-startTime));
       startTime = millis();
       Serial.print("go straight search ball");
-      go_straight(60,76);
+      go_straight(90,106 );
+      
       
     }
     else{
