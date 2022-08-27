@@ -201,14 +201,14 @@ void loop() {
     }
     else if (pixy.ccc.blocks[0].m_x > 210 && (pixy.ccc.blocks[0].m_y > 30)) {
       Serial.print("turn right\n");
-      turn_right(65, 81);
+      turn_right(60, 76);
       delay(100);
       stop_motor();
       delay(100);
     }
     else if (pixy.ccc.blocks[0].m_x < 140 && (pixy.ccc.blocks[0].m_y > 30)){
       Serial.print("turn left\n");
-      turn_left(65,81);
+      turn_left(60,76);
       delay(100);
       stop_motor();
       delay(100); 
